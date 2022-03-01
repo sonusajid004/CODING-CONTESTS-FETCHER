@@ -1,7 +1,7 @@
 import json
 from models.contest import Contest
 from contants import CodingWebsite
-from apiUtils.network import post
+from apiUtils.network import *
 
 
 def getLeetCodeContests():
@@ -23,6 +23,22 @@ def getLeetCodeContests():
     else:
         pass
 
-
+def getCodechefContests():
+    url = "https://www.codechef.com/api/list/contests/all"
+    response = get(url)
+    if (response.status_code == 200):
+        json_data = json.loads(response.text)
+        futureContests = json_data["future_contests"]
+        presentContests = json_data["present_contests"]
+        actualContestsData = []
+        for contest in futureContests:
+            actualContestsData.append(
+                Contest(contest['contest_name'], contest['contest_start_date'], contest['contest_duration'], CodingWebsite.CODECHEF))
+        for contest in presentContests:
+            actualContestsData.append(
+                Contest(contest['contest_name'], contest['contest_start_date'], contest['contest_duration'], CodingWebsite.CODECHEF))
+        for contest in actualContestsData:
+            print(contest)
 
 getLeetCodeContests()
+getCodechefContests()
