@@ -1,0 +1,27 @@
+botocore==1.23.33
+certifi==2021.10.8
+cfgv==3.3.1
+charset-normalizer==2.0.12
+click==8.0.3
+distlib==0.3.4
+filelock==3.4.2
+Flask==2.0.2
+git-remote-codecommit==1.16
+identify==2.4.5
+idna==3.3
+itsdangerous==2.0.1
+Jinja2==3.0.3
+jmespath==0.10.0
+MarkupSafe==2.0.1
+nodeenv==1.6.0
+platformdirs==2.4.1
+pre-commit==2.17.0
+python-dateutil==2.8.2
+PyYAML==6.0
+requests==2.27.1
+six @ file:///AppleInternal/BuildRoot/Library/Caches/com.apple.xbs/Sources/python3/python3-103/six-1.15.0-py2.py3-none-any.whl
+toml==0.10.2
+typing==3.7.4.3
+urllib3==1.26.8
+virtualenv==20.13.0
+Werkzeug==2.0.3
