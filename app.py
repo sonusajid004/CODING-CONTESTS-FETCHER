@@ -1,7 +1,7 @@
 import json
 import time
 
-from models.contest import Contest
+from models.contest import Contest, SpojContest
 from contants import CodingWebsite
 from apiUtils.network import *
 from bs4 import BeautifulSoup
@@ -83,4 +83,42 @@ def getHackerEarthContests():
 # getCodechefContests()
 # Mar  3, 06:00 PM IST
 
-getHackerEarthContests()
+# getHackerEarthContests()
+
+def getSpojContests():
+
+    def generate_contest(columns):
+        if len(columns) != 0:
+            name = columns[0].text.strip()
+            link = 'spoj.com' + columns[0].find_all('a')[0].get('href')
+            start = columns[1].text.strip()
+            end = columns[2].text.strip()
+            return SpojContest(name, start, end, link)
+
+    url = 'https://www.spoj.com/contests/'
+    r = get(url)
+    soup = BeautifulSoup(r.content, 'html.parser')
+
+    # with open("output1.html", "w") as file:
+    #     file.write(str(soup))
+
+    tables = soup.find_all('table', class_='table-condensed')
+    # Collecting Ddata
+    running_contests = tables[0]
+    future_contests = tables[1]
+    actualContestsData = []
+
+    for row in running_contests.tbody.find_all('tr'):
+        # Find all data for each column
+        columns = row.find_all('td')
+        actualContestsData.append(generate_contest(columns))
+
+    for row in future_contests.tbody.find_all('tr'):
+        columns = row.find_all('td')
+        actualContestsData.append(generate_contest(columns))
+
+    for contest in actualContestsData:
+        print(contest)
+
+
+getSpojContests()
