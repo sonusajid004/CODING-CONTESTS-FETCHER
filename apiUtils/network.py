@@ -7,3 +7,4 @@ def post(url:str,json:str):
 def get(url:str):
     r = requests.get(url)
     return r
+
