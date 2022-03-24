@@ -7,7 +7,6 @@ services:
       - mongodb_codeforcode
     networks:
       - app-tier
-
   mongodb_codeforcode:
     image: mongo:latest
     hostname: mongodb_codeforcode
