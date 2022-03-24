@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  contest_fetcher:
+    build:
+      context: .
+    links:
+      - mongodb_codeforcode
+    networks:
+      - app-tier
+
+  mongodb_codeforcode:
+    image: mongo:latest
+    hostname: mongodb_codeforcode
+    container_name: mongodb_codeforcode
+    environment:
+      #This user is created in the admin authentication database and given the role of root, which is a "superuser" role.
+      MONGO_INITDB_ROOT_USERNAME: codeforcode
+      MONGO_INITDB_ROOT_PASSWORD: CODEFORCODE@22
+    ports:
+      - 27017:27017
+    volumes:
+      - "${HOME}/codeforcode/mongodb_data_container:/data/db"
+    networks:
+      - app-tier
+networks:
+  app-tier:
+    driver: bridge
