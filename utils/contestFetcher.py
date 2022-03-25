@@ -4,9 +4,8 @@ from bs4 import BeautifulSoup
 from typing import List
 from utils.date import convertDateTimeToEpoch
 from utils.network import get, post
-from contants import CodingWebsite
+from contants import CodingWebsite, CodingPlatforms
 from models.contest import SpojContest, Contest
-
 
 
 class ContestFetcher:
@@ -30,14 +29,13 @@ class ContestFetcher:
             actualContestsData = []
             for contest in contests:
                 actualContestsData.append(
-                    Contest(contest['title'], contest['startTime'], contest['duration'], CodingWebsite.LEETCODE))
+                    Contest(CodingPlatforms.LEETCODE, contest['title'], contest['startTime'], contest['duration'],
+                            CodingWebsite.LEETCODE, contest['titleSlug'], "contest/"))
             res = list(filter(lambda x: x.isActive(), actualContestsData))
             return res
         else:
             print(f"Error Occured with status {response.status_code}: {response.content}")
             return []
-
-
 
     def getCodechefContests(self):
         url = "https://www.codechef.com/api/list/contests/all"
@@ -49,16 +47,18 @@ class ContestFetcher:
             actualContestsData = []
             for contest in futureContests:
                 actualContestsData.append(
-                    Contest(contest['contest_name'], convertDateTimeToEpoch(contest['contest_start_date']), contest['contest_duration'],
-                            CodingWebsite.CODECHEF))
+                    Contest(CodingPlatforms.CODECHEF, contest['contest_name'],
+                            convertDateTimeToEpoch(contest['contest_start_date']), contest['contest_duration'],
+                            CodingWebsite.CODECHEF, contest['contest_code'], ""))
             for contest in presentContests:
                 actualContestsData.append(
-                    Contest(contest['contest_name'], convertDateTimeToEpoch(contest['contest_start_date']), contest['contest_duration'],
-                            CodingWebsite.CODECHEF))
-            for contest in actualContestsData:
-                print(contest)
+                    Contest(CodingPlatforms.CODECHEF, contest['contest_name'],
+                            convertDateTimeToEpoch(contest['contest_start_date']), contest['contest_duration'],
+                            CodingWebsite.CODECHEF, contest['contest_code'], ""))
+            return actualContestsData
         else:
             print(f"Error Occured with status {response.status_code}: {response.content}")
+            return []
 
     def getHackerEarthContests(self):
         url = "https://www.hackerearth.com/challenges/"
@@ -127,4 +127,3 @@ class ContestFetcher:
 
         for contest in actualContestsData:
             print(contest)
-
