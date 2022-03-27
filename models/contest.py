@@ -5,7 +5,7 @@ from utils.contestUtils import getHashForContest
 class Contest:
 
     def __init__(self, codingPlatform:str,contestTitle: str, startTime: int, duration: int, website: str,
-                 contestCode: str = "", contestWebSitePrefix: str = "",contestType: str = 'CODING CONTEST'):
+                 contestWebSite: str = "",contestType: str = 'CODING CONTEST'):
         self.codingPlatform = codingPlatform
         self.contestTitle = contestTitle
         self.startTime = startTime
@@ -13,11 +13,10 @@ class Contest:
         self.website = website
         self.contestType = contestType
         self.hashValue = getHashForContest(self)
-        self.contestCode = contestCode
-        self.contestWebSitePrefix = contestWebSitePrefix
+        self.contestWebSite = contestWebSite
 
     def __str__(self) -> str:
-        return f'Coding Platform:{self.codingPlatform} Website: {self.website}, Contest: {self.contestTitle}, Start Time: {self.startTime}, Duration: {self.duration}, Hash: {self.hashValue}, ContestCode: {self.contestCode}, contestWebSitePrefix: {self.contestWebSitePrefix} '
+        return f'Coding Platform:{self.codingPlatform} Website: {self.website}, Contest: {self.contestTitle}, Start Time: {self.startTime}, Duration: {self.duration}, Hash: {self.hashValue}, contestSite: {self.contestWebSite} '
 
     def isActive(self) -> bool:
         return time.time() < self.startTime

@@ -12,17 +12,19 @@ class ContestRepo:
 
     @classmethod
     def insert_contests(cls, contests: List[Contest],platform:str):
+        if(len(contests)==0):
+            return
         try:
             contestsSerialized = objToDict(contests)
             query={"codingPlatform":platform}
             cls.contests_collection_ref.delete_many(query)
             res = cls.contests_collection_ref.insert_many(contestsSerialized)
-            status = Status(platform,StatusValue.SUCCESS,"Finished")
-            res = cls.status_collection_ref.insert_one(status.__dict__)
             print(f"Inserted contests from {platform}")
         except Exception as e:
             print(f"Error in inserting from {platform}: {e}")
-            status = Status(platform, StatusValue.FAILURE, e)
-            res = cls.status_collection_ref.insert_one(status.__dict__)
+            raise e
 
 
+    @classmethod
+    def insert_status(cls,status:Status):
+        res = cls.status_collection_ref.insert_one(status.__dict__)
